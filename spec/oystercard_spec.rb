@@ -21,12 +21,18 @@ describe Oystercard do
   end
   describe '#in_journey?' do
     it 'oystercard is not in journey by default' do
-      expect(subject.in_journey?).to eq(false)
+      expect(subject.in_journey).to eq(false)
     end
   end
   describe '#touch_in' do
     it "Updates a card's @in_journey attribute to be true" do
       expect(subject.touch_in).to eq(true)
+    end
+  end
+  describe '#touch_out' do
+    it 'updates card\'s @in_journey attribute to be false' do
+      subject.touch_in
+      expect(subject.touch_out).to eq(false)
     end
   end
 end
