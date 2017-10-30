@@ -9,9 +9,14 @@ describe Oystercard do
       subject.top_up(20)
       expect(subject.balance).to eq(20)
     end
-    it 'Will not allow a card\'s balance to exceed £90' do
+    it 'Will not allow a card\'s balance to exceed the given maximum' do
       expect { subject.top_up(100) }.to raise_error('Sorry, the balance on'\
       " your Oyster card can not exceed #{subject.maximum_amount}.")
+    end
+  end
+  describe '#deduct' do
+    it "Deducts the a given amount from the card's balance" do
+      expect(subject.deduct(20)).to eq -20
     end
   end
 end
