@@ -19,4 +19,9 @@ describe Oystercard do
       expect(subject.deduct(20)).to eq -20
     end
   end
+  describe '#in_journey?' do
+    it 'oystercard is not in journey by default' do
+      expect(subject.in_journey?).to eq(false)
+    end
+  end
 end
