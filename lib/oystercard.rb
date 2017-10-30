@@ -9,7 +9,7 @@ class Oystercard
   end
 
   def top_up(amount)
-    if (@balance + amount) > MAXIMUM_AMOUNT
+    if exceed?(amount)
       raise "Sorry, the balance on your Oyster card can not exceed #{MAXIMUM_AMOUNT}."
     end
     @balance += amount
@@ -25,5 +25,11 @@ class Oystercard
 
   def touch_in
     self.in_journey?(true)
+  end
+
+  private
+
+  def exceed?(amount)
+    @balance + amount > MAXIMUM_AMOUNT ? true : false
   end
 end
