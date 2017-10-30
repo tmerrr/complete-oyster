@@ -24,4 +24,9 @@ describe Oystercard do
       expect(subject.in_journey?).to eq(false)
     end
   end
+  describe '#touch_in' do
+    it "Updates a card's @in_journey attribute to be true" do
+      expect(subject.touch_in).to eq(true)
+    end
+  end
 end

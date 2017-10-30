@@ -19,7 +19,11 @@ class Oystercard
     @balance -= cost
   end
 
-  def in_journey?
-    false
+  def in_journey?(journey = false)
+    @in_journey = journey
+  end
+
+  def touch_in
+    self.in_journey?(true)
   end
 end
