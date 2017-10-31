@@ -15,16 +15,13 @@ class Oystercard
     @balance += amount
   end
 
-  def deduct(cost)
-    @balance -= cost
-  end
-
   def touch_in
     raise "Insufficient funds" if overdrawn?
     @in_journey = true
   end
 
-  def touch_out
+  def touch_out(cost)
+    deduct(MINIMUM_FARE)
     @in_journey = false
   end
 
@@ -36,5 +33,9 @@ class Oystercard
 
   def overdrawn?
     @balance < MINIMUM_FARE
+  end
+
+  def deduct(cost)
+    @balance -= cost
   end
 end

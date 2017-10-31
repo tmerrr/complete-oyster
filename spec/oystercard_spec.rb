@@ -24,17 +24,6 @@ describe Oystercard do
     end
   end
 
-  describe '#deduct' do
-    context 'when deducting 20 from the card balance' do
-      it 'it should reduce balance by 20' do
-        expect(subject.deduct(20)).to eq -20
-      end
-      it 'it should change balance by 20' do
-        expect {subject.deduct(20) }.to change { subject.balance }.by -20
-      end
-    end
-  end
-
   describe '#in_journey?' do
     context 'when oystercard is not in journey' do
       it 'returns false' do
@@ -58,7 +47,10 @@ describe Oystercard do
     context 'when touching out' do
       it '@in_journey attribute should return false' do
         card.touch_in
-        expect(card.touch_out).to eq false
+        expect(card.touch_out(10)).to eq false
+      end
+      it 'it should reduce balance by minimum fare' do
+        expect {subject.touch_out(Oystercard::MINIMUM_FARE) }.to change { subject.balance }.by -Oystercard::MINIMUM_FARE
       end
     end
   end
