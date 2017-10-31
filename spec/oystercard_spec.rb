@@ -26,35 +26,33 @@ describe Oystercard do
   end
 
   describe '#in_journey?' do
-    context 'when oystercard is not in journey' do
-      it 'returns false' do
-        expect(subject.in_journey).to eq false
+    context 'when oystercard is in journey' do
+      it 'returns true' do
+        card.touch_in('Aldgate')
+        expect(card.in_journey?).to eq true
       end
     end
   end
 
   describe '#touch_in' do
     context 'when touching in' do
-      it '@in_journey attribute should return true' do
-        expect(card.touch_in('')).to eq true
-      end
       it 'should raise an error when insufficient funds' do
         expect { subject.touch_in('') }.to raise_error 'Insufficient funds'
       end
       it 'should return user start point' do
-        expect { card.touch_in(station) }.to change { card.start_point }
+        expect { card.touch_in(station) }.to change { card.entry_station }
       end
     end
   end
 
   describe '#touch_out' do
     context 'when touching out' do
-      it '@in_journey attribute should return false' do
+      it 'changes in journey on touch out' do
         card.touch_in('')
-        expect(card.touch_out(10)).to eq false
+        expect { card.touch_out }.to change { card.in_journey? }
       end
       it 'it should reduce balance by minimum fare' do
-        expect {subject.touch_out(Oystercard::MINIMUM_FARE) }.to change { subject.balance }.by -Oystercard::MINIMUM_FARE
+        expect { subject.touch_out }.to change { subject.balance }.by -Oystercard::MINIMUM_FARE
       end
     end
   end
