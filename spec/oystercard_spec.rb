@@ -1,7 +1,7 @@
 require 'oystercard'
 
 describe Oystercard do
-
+  let(:card) {Oystercard.new(10)}
   describe '#initialize' do
     context 'When intializing a new oystercard' do
       it 'it should return a balance of 0' do
@@ -41,16 +41,20 @@ describe Oystercard do
   describe '#touch_in' do
     context 'when touching in' do
       it "@in_journey attribute should return true" do
-        expect(subject.touch_in).to eq(true)
+        expect(card.touch_in).to eq(true)
+      end
+      it "should raise an error when insufficient funds" do
+        expect { subject.touch_in }.to raise_error "Insufficient funds"
       end
     end
   end
 
+
   describe '#touch_out' do
     context 'when touching out' do
       it '@in_journey attribute should return false' do
-        subject.touch_in
-        expect(subject.touch_out).to eq(false)
+        card.touch_in
+        expect(card.touch_out).to eq(false)
       end
     end
   end
