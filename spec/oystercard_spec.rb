@@ -3,6 +3,7 @@ require 'oystercard'
 describe Oystercard do
 
   let(:card) { Oystercard.new(10) }
+  let(:station) { double(:aldgate) }
 
   describe '#initialize' do
     context 'When intializing a new oystercard' do
@@ -35,10 +36,13 @@ describe Oystercard do
   describe '#touch_in' do
     context 'when touching in' do
       it '@in_journey attribute should return true' do
-        expect(card.touch_in).to eq true
+        expect(card.touch_in('')).to eq true
       end
       it 'should raise an error when insufficient funds' do
-        expect { subject.touch_in }.to raise_error 'Insufficient funds'
+        expect { subject.touch_in('') }.to raise_error 'Insufficient funds'
+      end
+      it 'should return user start point' do
+        expect { card.touch_in(station) }.to change { card.start_point }
       end
     end
   end
@@ -46,7 +50,7 @@ describe Oystercard do
   describe '#touch_out' do
     context 'when touching out' do
       it '@in_journey attribute should return false' do
-        card.touch_in
+        card.touch_in('')
         expect(card.touch_out(10)).to eq false
       end
       it 'it should reduce balance by minimum fare' do
