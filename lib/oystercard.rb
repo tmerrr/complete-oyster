@@ -27,6 +27,7 @@ class Oystercard
     add_station_to_journey(:exit_station, exit_station)
     @entry_station = nil
     add_journey_to_history
+    @journey = {}
   end
 
   def in_journey?

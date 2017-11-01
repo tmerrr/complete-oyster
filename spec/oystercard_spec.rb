@@ -67,11 +67,6 @@ describe Oystercard do
       it 'it accepts exit station' do
         expect(subject).to respond_to(:touch_out).with(1).argument
       end
-      it "should add exit_station to journey" do
-        card.touch_in(station)
-        card.touch_out(exit_station)
-        expect(card.journey).to eq({:entry_station=> station, :exit_station=> exit_station })
-      end
     end
   end
 
@@ -87,10 +82,4 @@ describe Oystercard do
       end
     end
   end
-
-  # describe '@travel_history' do
-  #   it 'should return travel history' do
-  #
-  #   end
-  # end
 end
