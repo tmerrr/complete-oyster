@@ -14,7 +14,7 @@ describe Oystercard do
     end
     context 'travel history empty on initialise' do
       it 'returns 0 for travel history' do
-        expect(card.travel_history).to eq []
+        expect(card.journey).to eq []
       end
     end
   end
@@ -50,7 +50,7 @@ describe Oystercard do
       end
       it "should add entry station to travel_history" do
         card.touch_in(station)
-        expect(card.travel_history).to eq([station])
+        expect(card.journey).to eq([station])
       end
     end
   end
@@ -67,10 +67,10 @@ describe Oystercard do
       it 'it accepts exit station' do
         expect(subject).to respond_to(:touch_out).with(1).argument
       end
-      it "should add exit_station to travel history" do
+      it "should add exit_station to journey" do
         card.touch_in(station)
         card.touch_out(exit_station)
-        expect(card.travel_history).to eq([station,exit_station])
+        expect(card.journey).to eq([station,exit_station])
       end
     end
   end
