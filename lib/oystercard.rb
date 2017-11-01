@@ -16,11 +16,13 @@ class Oystercard
 
   def touch_in(station)
     raise "Insufficient funds" if overdrawn?
+    @travel_history << station
     @entry_station = station
   end
 
   def touch_out(exit_station)
     deduct(MINIMUM_FARE)
+    @travel_history << exit_station
     @entry_station = nil
   end
 
