@@ -11,6 +11,11 @@ describe Oystercard do
         expect(subject.balance).to eq 0
       end
     end
+    context 'travel history empty on initialise' do
+      it 'returns 0 for travel history' do
+        expect(card.travel_history).to eq []
+      end
+    end
   end
 
   describe '#top_up' do
@@ -49,11 +54,19 @@ describe Oystercard do
     context 'when touching out' do
       it 'changes in journey on touch out' do
         card.touch_in('')
-        expect { card.touch_out }.to change { card.in_journey? }
+        expect { card.touch_out(station) }.to change { card.in_journey? }
       end
       it 'it should reduce balance by minimum fare' do
-        expect { subject.touch_out }.to change { subject.balance }.by -Oystercard::MINIMUM_FARE
+        expect { subject.touch_out(station) }.to change { subject.balance }.by -Oystercard::MINIMUM_FARE
+      end
+      it 'it accepts exit station' do
+        expect(subject).to respond_to(:touch_out).with(1).argument
       end
     end
   end
+  # describe '@travel_history' do
+  #   it 'should return travel history' do
+  #
+  #   end
+  # end
 end
