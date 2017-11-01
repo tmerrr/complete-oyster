@@ -4,6 +4,7 @@ describe Oystercard do
 
   let(:card) { Oystercard.new(10) }
   let(:station) { double(:aldgate) }
+  let(:exit_station) { double(:camden) }
 
   describe '#initialize' do
     context 'When intializing a new oystercard' do
@@ -47,6 +48,10 @@ describe Oystercard do
       it 'should return user start point' do
         expect { card.touch_in(station) }.to change { card.entry_station }
       end
+      it "should add entry station to travel_history" do
+        card.touch_in(station)
+        expect(card.travel_history).to eq([station])
+      end
     end
   end
 
@@ -62,8 +67,14 @@ describe Oystercard do
       it 'it accepts exit station' do
         expect(subject).to respond_to(:touch_out).with(1).argument
       end
+      it "should add exit_station to travel history" do
+        card.touch_in(station)
+        card.touch_out(exit_station)
+        expect(card.travel_history).to eq([station,exit_station])
+      end
     end
   end
+
   # describe '@travel_history' do
   #   it 'should return travel history' do
   #
