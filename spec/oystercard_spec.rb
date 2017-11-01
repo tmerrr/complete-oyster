@@ -12,9 +12,9 @@ describe Oystercard do
         expect(subject.balance).to eq 0
       end
     end
-    context 'travel history empty on initialise' do
-      it 'returns 0 for travel history' do
-        expect(card.journey).to eq []
+    context 'journey empty on initialise' do
+      it 'returns {} for travel history' do
+        expect(card.journey).to eq({})
       end
     end
   end
@@ -50,7 +50,7 @@ describe Oystercard do
       end
       it "should add entry station to travel_history" do
         card.touch_in(station)
-        expect(card.journey).to eq([station])
+        expect(card.journey).to eq({:entry_station=> station})
       end
     end
   end
@@ -70,7 +70,20 @@ describe Oystercard do
       it "should add exit_station to journey" do
         card.touch_in(station)
         card.touch_out(exit_station)
-        expect(card.journey).to eq([station,exit_station])
+        expect(card.journey).to eq({:entry_station=> station, :exit_station=> exit_station })
+      end
+    end
+  end
+
+  describe "#travel_history" do
+    context "when completing journeys" do
+      it "should return an empty array" do
+        expect(card.journey_history).to eq([])
+      end
+      it "should return the journey history" do
+        card.touch_in(station)
+        card.touch_out(exit_station)
+        expect(card.journey_history).to eq([{:entry_station=> station, :exit_station=> exit_station }])
       end
     end
   end
