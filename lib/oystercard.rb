@@ -1,10 +1,11 @@
 class Oystercard
   attr_reader :balance, :in_journey, :entry_station, :journey, :journey_history
 
+  INITIAL_BALANCE = 0
   MAXIMUM_AMOUNT = 90
   MINIMUM_FARE = 1
 
-  def initialize(balance = 0)
+  def initialize(balance = INITIAL_BALANCE)
     @balance = balance
     @journey_history = []
     @journey = {}
