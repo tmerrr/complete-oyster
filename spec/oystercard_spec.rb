@@ -5,8 +5,12 @@ describe Oystercard do
   let(:card) { described_class.new(balance: 10, journey: no_journey) }
   let(:station) { double(:aldgate) }
   let(:exit_station) { double(:camden) }
-  let(:no_journey) { double(:journey, :in_journey? => false, :set_entry_station => station, :set_exit_station => station, :fare => 0) }
-  let(:ongoing_journey) { double(:journey, :in_journey? => true, :set_entry_station => station, :set_exit_station => station, :fare => 0) }
+
+  let(:no_journey) { double(:journey, :in_journey? => false,
+    :set_entry_station => station, :set_exit_station => station, :fare => 0) }
+
+  let(:ongoing_journey) { double(:journey, :in_journey? => true,
+    :set_entry_station => station, :set_exit_station => station, :fare => 0) }
 
   describe '#initialize' do
     context 'When intializing a new oystercard' do
@@ -28,7 +32,8 @@ describe Oystercard do
         expect(subject.balance).to eq(20)
       end
       it 'card balance will not exceed the given maximum' do
-        expect { subject.top_up(100) }.to raise_error("Sorry, the balance on your Oyster card cannot exceed #{Oystercard::MAXIMUM_AMOUNT}.")
+        expect { subject.top_up(100) }
+          .to raise_error("MaxLimit of #{Oystercard::MAXIMUM_AMOUNT}.")
       end
     end
   end
@@ -96,7 +101,8 @@ describe Oystercard do
         expect(card.journey_history).to eq([])
       end
       it "should return the journey history" do
-        expect { card.touch_out(exit_station) }.to change { card.journey_history }.to include(no_journey)
+        expect { card.touch_out(exit_station) }
+          .to change { card.journey_history }.to include(no_journey)
       end
     end
   end

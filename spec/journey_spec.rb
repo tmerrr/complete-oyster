@@ -60,7 +60,9 @@ describe Journey do
 
   describe "#fare" do
     context "when completing full journey" do
-      let(:completed_journey) { described_class.new(entry_station: aldgate, exit_station: aldgate) }
+      let(:completed_journey) do
+        described_class.new(entry_station: aldgate,exit_station: aldgate)
+      end
       it "should return 1" do
         expect(completed_journey.fare).to eq(1)
       end

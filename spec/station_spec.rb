@@ -1,7 +1,7 @@
 require 'station'
 
 describe Station do
-  subject { described_class.new(name: 'Camden', zone: 1) }
+  subject { described_class.new('Camden', 1) }
 
   context 'when instantiating a station it' do
     it 'should be an instance of station' do

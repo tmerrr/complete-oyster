@@ -26,7 +26,8 @@ class Journey
 
   private
   def penalty_due?
-    (@entry_station != nil && @exit_station == nil) || (@entry_station == nil && @exit_station != nil)
+    (@entry_station != nil && @exit_station == nil) ||
+      (@entry_station == nil && @exit_station != nil)
   end
 
   def starting_journey?

@@ -1,4 +1,5 @@
 require_relative 'journey'
+require_relative 'station'
 
 class Oystercard
   attr_reader :balance, :journey, :journey_history
@@ -14,28 +15,19 @@ class Oystercard
   end
 
   def top_up(amount)
-    raise "Sorry, the balance on your Oyster card cannot exceed #{MAXIMUM_AMOUNT}." if exceed?(amount)
+    raise "MaxLimit of #{MAXIMUM_AMOUNT}." if exceed?(amount)
     @balance += amount
   end
 
   def touch_in(station)
     raise "Insufficient funds" if overdrawn?
-    deduct(@journey.fare)
-    # if penalty is charged, push journey to history
-    # then start a new journey
-    if in_journey? 
-      add_journey_to_history
-      @journey = Journey.new
-    end
+    touch_in_checks
     @journey.set_entry_station(station)
   end
 
   def touch_out(exit_station)
-    # deduct(MINIMUM_FARE)
     @journey.set_exit_station(exit_station)
-    deduct(@journey.fare)
-    add_journey_to_history
-    @journey = Journey.new
+    touch_out_process
   end
 
   def in_journey?
@@ -58,6 +50,28 @@ class Oystercard
 
   def add_journey_to_history
     @journey_history << @journey
+  end
+
+  def set_new_journey
+    @journey = Journey.new
+  end
+
+  def touch_in_checks
+    charge_fare
+    if in_journey?
+      add_journey_to_history
+      set_new_journey
+    end
+  end
+
+  def touch_out_process
+    charge_fare
+    add_journey_to_history
+    set_new_journey
+  end
+
+  def charge_fare
+    deduct(@journey.fare)
   end
 
 end
