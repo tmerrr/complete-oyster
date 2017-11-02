@@ -1,7 +1,7 @@
 require_relative 'journey'
 
 class Oystercard
-  attr_reader :balance, :in_journey, :entry_station, :journey, :journey_history
+  attr_reader :balance, :journey, :journey_history
 
   INITIAL_BALANCE = 0
   MAXIMUM_AMOUNT = 90
@@ -20,6 +20,8 @@ class Oystercard
 
   def touch_in(station)
     raise "Insufficient funds" if overdrawn?
+    
+    # charge 0 if i touched out last night, charge 6 if i didnt,
     @journey.set_entry_station(station)
   end
 
@@ -52,7 +54,4 @@ class Oystercard
     @journey_history << @journey
   end
 
-  def add_station_to_journey(key, station)
-    @journey[key] = station
-  end
 end

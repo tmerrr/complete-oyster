@@ -18,4 +18,16 @@ class Journey
     !!@entry_station
   end
 
+  def fare
+    if @entry_station != nil && @exit_station == nil
+      6
+    elsif @entry_station == nil && @exit_station != nil
+      6
+    elsif @entry_station == nil && @exit_station == nil
+      0
+    else
+      1
+    end
+  end
+
 end

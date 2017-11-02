@@ -57,4 +57,29 @@ describe Journey do
       end
     end
   end
+
+  describe "#fare" do
+    context "when completing full journey" do
+      let(:completed_journey) { described_class.new(entry_station: aldgate, exit_station: aldgate) }
+      it "should return 1" do
+        expect(completed_journey.fare).to eq(1)
+      end
+    end
+    context "when touching in, having failed to touch out" do
+      it "should return 6" do
+        expect(ongoing_journey.fare).to eq(6)
+      end
+    end
+    context "when touching out, having failed to touch in" do
+      let(:journey) { described_class.new(exit_station: aldgate) }
+      it "should return 6" do
+        expect(journey.fare).to eq(6)
+      end
+    end
+    context "when touching in, when starting a new journey" do
+      it "should return 0" do
+        expect(subject.fare).to eq(0)
+      end
+    end
+  end
 end
