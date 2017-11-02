@@ -23,7 +23,10 @@ class Oystercard
     deduct(@journey.fare)
     # if penalty is charged, push journey to history
     # then start a new journey
-    add_journey_to_history if in_journey? 
+    if in_journey? 
+      add_journey_to_history
+      @journey = Journey.new
+    end
     @journey.set_entry_station(station)
   end
 

@@ -63,6 +63,10 @@ describe Oystercard do
         expect { card.touch_in(station) }
           .to change { card.journey_history }.to include(ongoing_journey)
       end
+      it "creates a new instance of Journey" do
+        expect { card.touch_in(station) }
+          .to change { card.journey }.from(ongoing_journey)
+      end
     end
     context "when starting new journey" do
       it "doesnt push journey to journey_history" do
