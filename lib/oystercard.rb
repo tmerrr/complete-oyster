@@ -20,14 +20,17 @@ class Oystercard
 
   def touch_in(station)
     raise "Insufficient funds" if overdrawn?
-    
+    deduct(@journey.fare)
     # charge 0 if i touched out last night, charge 6 if i didnt,
+    # if penalty is charged, push journey to history
+    # then start a new journey
     @journey.set_entry_station(station)
   end
 
   def touch_out(exit_station)
-    deduct(MINIMUM_FARE)
+    # deduct(MINIMUM_FARE)
     @journey.set_exit_station(exit_station)
+    deduct(@journey.fare)
     add_journey_to_history
     @journey = Journey.new
   end

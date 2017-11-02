@@ -5,8 +5,8 @@ describe Oystercard do
   let(:card) { described_class.new(balance: 10, journey: no_journey) }
   let(:station) { double(:aldgate) }
   let(:exit_station) { double(:camden) }
-  let(:no_journey) { double(:journey, :in_journey? => false, :set_entry_station => station, :set_exit_station => station) }
-  let(:ongoing_journey) { double(:journey, :in_journey? => true, :set_exit_station => station) }
+  let(:no_journey) { double(:journey, :in_journey? => false, :set_entry_station => station, :set_exit_station => station, :fare => 0) }
+  let(:ongoing_journey) { double(:journey, :in_journey? => true, :set_exit_station => station, :fare => 0) }
 
   describe '#initialize' do
     context 'When intializing a new oystercard' do

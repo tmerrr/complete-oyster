@@ -19,15 +19,17 @@ class Journey
   end
 
   def fare
-    if @entry_station != nil && @exit_station == nil
-      6
-    elsif @entry_station == nil && @exit_station != nil
-      6
-    elsif @entry_station == nil && @exit_station == nil
-      0
-    else
-      1
-    end
+    return 6 if penalty_due?
+    return 0 if starting_journey?
+    1
   end
 
+  private
+  def penalty_due?
+    (@entry_station != nil && @exit_station == nil) || (@entry_station == nil && @exit_station != nil)
+  end
+
+  def starting_journey?
+    @entry_station == nil && @exit_station == nil
+  end
 end
