@@ -1,8 +1,10 @@
 require 'journeylog'
 
 describe JourneyLog do
-  let(:journey_class) { double(:journey_class) }
-  subject { described_class.new(journey_class)}
+  let(:journey) { double(:journey) }
+  let(:journey_class) { double(:journey_class, :new => journey) }
+  let(:station) { double(:station) }
+  subject { described_class.new(journey_class) }
 
   describe "#initialize" do
     it "should return an instance of JourneyLog" do
@@ -18,6 +20,12 @@ describe JourneyLog do
       it "takes one arg upon instantiation" do
         is_expected.to respond_to(:new).with(1).arguments
       end
+    end
+  end
+
+  describe '#start' do
+    it 'creates a new Journey' do
+      expect(subject.start(station)).to eq(journey)
     end
   end
 
