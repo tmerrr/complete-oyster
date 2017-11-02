@@ -6,7 +6,7 @@ describe Oystercard do
   let(:station) { double(:aldgate) }
   let(:exit_station) { double(:camden) }
   let(:no_journey) { double(:journey, :in_journey? => false, :set_entry_station => station, :set_exit_station => station, :fare => 0) }
-  let(:ongoing_journey) { double(:journey, :in_journey? => true, :set_exit_station => station, :fare => 0) }
+  let(:ongoing_journey) { double(:journey, :in_journey? => true, :set_entry_station => station, :set_exit_station => station, :fare => 0) }
 
   describe '#initialize' do
     context 'When intializing a new oystercard' do
@@ -55,6 +55,19 @@ describe Oystercard do
       end
       it 'should set start point to station' do
         expect(card.touch_in(station)).to eq(station)
+      end
+    end
+    context "on touch_in and penalty being charged" do
+      let(:card) { described_class.new(balance: 50, journey: ongoing_journey) }
+      it "pushed journey to journey_history" do
+        expect { card.touch_in(station) }
+          .to change { card.journey_history }.to include(ongoing_journey)
+      end
+    end
+    context "when starting new journey" do
+      it "doesnt push journey to journey_history" do
+        expect { card.touch_in(station) }
+          .not_to change { card.journey_history }
       end
     end
   end
