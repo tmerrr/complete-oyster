@@ -14,4 +14,8 @@ class Journey
     @exit_station = station
   end
 
+  def in_journey?
+    !!@entry_station
+  end
+
 end

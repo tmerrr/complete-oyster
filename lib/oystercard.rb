@@ -1,3 +1,5 @@
+require_relative 'journey'
+
 class Oystercard
   attr_reader :balance, :in_journey, :entry_station, :journey, :journey_history
 
@@ -5,10 +7,10 @@ class Oystercard
   MAXIMUM_AMOUNT = 90
   MINIMUM_FARE = 1
 
-  def initialize(balance = INITIAL_BALANCE)
-    @balance = balance
-    @journey_history = []
-    @journey = {}
+  def initialize(balance: INITIAL_BALANCE, journey: Journey.new)
+    @balance          = balance
+    @journey_history  = []
+    @journey          = journey
   end
 
   def top_up(amount)
@@ -27,11 +29,11 @@ class Oystercard
     add_station_to_journey(:exit_station, exit_station)
     @entry_station = nil
     add_journey_to_history
-    @journey = {}
+    @journey = Journey.new
   end
 
   def in_journey?
-    @entry_station ? true : false
+    @journey.in_journey?
   end
 
   private

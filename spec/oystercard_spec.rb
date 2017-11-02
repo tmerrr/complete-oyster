@@ -5,6 +5,8 @@ describe Oystercard do
   let(:card) { Oystercard.new(10) }
   let(:station) { double(:aldgate) }
   let(:exit_station) { double(:camden) }
+  let(:no_journey) { double(:journey, :in_journey? => false) }
+  let(:ongoing_journey) { double(:journey, :in_journey? => true) }
 
   describe '#initialize' do
     context 'When intializing a new oystercard' do
@@ -33,9 +35,9 @@ describe Oystercard do
 
   describe '#in_journey?' do
     context 'when oystercard is in journey' do
+      let(:card) { described_class.new(journey: ongoing_journey) }
       it 'returns true' do
-        card.touch_in('Aldgate')
-        expect(card.in_journey?).to eq true
+        expect(card.in_journey?).to be(true)
       end
     end
   end

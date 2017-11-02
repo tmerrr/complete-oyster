@@ -43,4 +43,18 @@ describe Journey do
         .to change { subject.exit_station }.from(nil).to(aldgate)
     end
   end
+
+  describe '#in_journey?' do
+    context 'when not in a journey' do
+      it 'returns false' do
+        expect(subject.in_journey?).to be(false)
+      end
+    end
+
+    context 'when in a journey' do
+      it 'returns true' do
+        expect(ongoing_journey.in_journey?).to be(true)
+      end
+    end
+  end
 end
