@@ -20,8 +20,7 @@ class Oystercard
 
   def touch_in(station)
     raise "Insufficient funds" if overdrawn?
-    add_station_to_journey(:entry_station, station)
-    @entry_station = station
+    @journey.set_entry_station(station)
   end
 
   def touch_out(exit_station)

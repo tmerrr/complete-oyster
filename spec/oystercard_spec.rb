@@ -2,21 +2,21 @@ require 'oystercard'
 
 describe Oystercard do
 
-  let(:card) { Oystercard.new(10) }
+  let(:card) { described_class.new(balance: 10, journey: no_journey) }
   let(:station) { double(:aldgate) }
   let(:exit_station) { double(:camden) }
-  let(:no_journey) { double(:journey, :in_journey? => false) }
+  let(:no_journey) { double(:journey, :in_journey? => false, :set_entry_station => station) }
   let(:ongoing_journey) { double(:journey, :in_journey? => true) }
 
   describe '#initialize' do
     context 'When intializing a new oystercard' do
-      it 'it should return a balance of 0' do
-        expect(subject.balance).to eq 0
+      it 'it should return a balance of 10' do
+        expect(card.balance).to eq 10
       end
     end
     context 'journey empty on initialise' do
       it 'returns {} for travel history' do
-        expect(card.journey).to eq({})
+        expect(card.journey).to eq(no_journey)
       end
     end
   end
@@ -40,6 +40,12 @@ describe Oystercard do
         expect(card.in_journey?).to be(true)
       end
     end
+    context "when oystercard is NOT in journey" do
+      let(:card) { described_class.new(journey: no_journey) }
+      it "returns false" do
+        expect(card.in_journey?).to be(false)
+      end
+    end
   end
 
   describe '#touch_in' do
@@ -47,8 +53,8 @@ describe Oystercard do
       it 'should raise an error when insufficient funds' do
         expect { subject.touch_in('') }.to raise_error 'Insufficient funds'
       end
-      it 'should return user start point' do
-        expect { card.touch_in(station) }.to change { card.entry_station }
+      it 'should set start point to station' do
+        expect(card.touch_in(station)).to eq(station)
       end
       it "should add entry station to travel_history" do
         card.touch_in(station)
