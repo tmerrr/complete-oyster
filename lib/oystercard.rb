@@ -25,8 +25,7 @@ class Oystercard
 
   def touch_out(exit_station)
     deduct(MINIMUM_FARE)
-    add_station_to_journey(:exit_station, exit_station)
-    @entry_station = nil
+    @journey.set_exit_station(exit_station)
     add_journey_to_history
     @journey = Journey.new
   end

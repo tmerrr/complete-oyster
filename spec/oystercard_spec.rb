@@ -5,8 +5,8 @@ describe Oystercard do
   let(:card) { described_class.new(balance: 10, journey: no_journey) }
   let(:station) { double(:aldgate) }
   let(:exit_station) { double(:camden) }
-  let(:no_journey) { double(:journey, :in_journey? => false, :set_entry_station => station) }
-  let(:ongoing_journey) { double(:journey, :in_journey? => true) }
+  let(:no_journey) { double(:journey, :in_journey? => false, :set_entry_station => station, :set_exit_station => station) }
+  let(:ongoing_journey) { double(:journey, :in_journey? => true, :set_exit_station => station) }
 
   describe '#initialize' do
     context 'When intializing a new oystercard' do
@@ -56,26 +56,21 @@ describe Oystercard do
       it 'should set start point to station' do
         expect(card.touch_in(station)).to eq(station)
       end
-      it "should add entry station to travel_history" do
-        card.touch_in(station)
-        expect(card.journey).to eq({:entry_station=> station})
-      end
     end
   end
 
   describe '#touch_out' do
-    context 'when touching out' do
-      it 'changes in journey on touch out' do
-        card.touch_in('')
-        expect { card.touch_out(station) }.to change { card.in_journey? }
+      let(:card) { described_class.new(journey: ongoing_journey) }
+      it 'adds Journey to travel_history' do
+        expect { card.touch_out(exit_station) }
+          .to change { card.journey_history }.to include(ongoing_journey)
       end
-      it 'it should reduce balance by minimum fare' do
-        expect { subject.touch_out(station) }.to change { subject.balance }.by -Oystercard::MINIMUM_FARE
+
+      it 'creates a new instance of Journey' do
+        expect { card.touch_out(exit_station) }
+          .to change { card.journey }.from(ongoing_journey)
       end
-      it 'it accepts exit station' do
-        expect(subject).to respond_to(:touch_out).with(1).argument
-      end
-    end
+
   end
 
   describe "#travel_history" do
@@ -84,9 +79,7 @@ describe Oystercard do
         expect(card.journey_history).to eq([])
       end
       it "should return the journey history" do
-        card.touch_in(station)
-        card.touch_out(exit_station)
-        expect(card.journey_history).to eq([{:entry_station=> station, :exit_station=> exit_station }])
+        expect { card.touch_out(exit_station) }.to change { card.journey_history }.to include(no_journey)
       end
     end
   end
