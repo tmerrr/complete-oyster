@@ -1,3 +1,5 @@
+require 'journey'
+
 class JourneyLog
   attr_reader :journey_history, :journey
 
@@ -7,6 +9,6 @@ class JourneyLog
   end
 
   def start(entry_station)
-    @journey = @journey_class.new
+    @journey = @journey_class.new(entry_station: entry_station)
   end
 end
