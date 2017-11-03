@@ -9,4 +9,6 @@ group :test, :development do
   gem 'rspec'
 end
 
-# gem "rails"
+group :test do
+  gem 'simplecov', :require => false
+end
