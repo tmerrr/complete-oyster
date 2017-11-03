@@ -41,14 +41,6 @@ class Journey
   end
 
   def calculate_fare
-    case (@exit_station.zone - @entry_station.zone).abs
-    when 0 then 1
-    when 1 then 2
-    when 2 then 3
-    when 3 then 4
-    when 4 then 5
-    else
-      6
-    end
+    (@exit_station.zone - @entry_station.zone).abs + 1
   end
 end
