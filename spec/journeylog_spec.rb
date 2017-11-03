@@ -60,4 +60,12 @@ describe JourneyLog do
     end
   end
 
+  describe '#view_history' do
+    it 'puts the full journey history in a readable format' do
+      journeylog.history << journey
+      allow(journey).to receive_messages(get_string: 'string output of journey')
+      expect(journeylog.view_history).to eq(journeylog.history)
+    end
+  end
+
 end

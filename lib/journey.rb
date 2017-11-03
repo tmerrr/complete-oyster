@@ -20,6 +20,10 @@ class Journey
     !!@entry_station
   end
 
+  def get_string
+    "Start: #{@entry_station.name}, Zone #{@entry_station.zone}.  Exit: #{@exit_station.name}, Zone #{@exit_station.zone}."
+  end
+
   def fare
     return PENALTY if penalty_due?
     return 0 if starting_journey?

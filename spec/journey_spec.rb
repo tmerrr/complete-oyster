@@ -1,7 +1,8 @@
 require 'journey'
 
 describe Journey do
-  let(:aldgate) { double(:station, :name => "Aldgate", :zone => 1) }
+  let(:aldgate) { double(:station, name: "Aldgate", zone: 3) }
+  let(:kingsx) { double(:station, name: "Kings Cross", zone: 1) }
   let(:ongoing_journey) { Journey.new(entry_station: aldgate) }
 
   context "When instantiating a journey it" do
@@ -9,6 +10,7 @@ describe Journey do
       expect(subject).to be_an_instance_of(Journey)
     end
   end
+
   describe "#entry_station" do
     context "when calling entry_station on a new journey" do
       it "will return nil" do
@@ -22,6 +24,7 @@ describe Journey do
       end
     end
   end
+
   describe "#exit_station" do
     context "when calling exit_station on a journey" do
       it "will return nil" do
@@ -34,6 +37,17 @@ describe Journey do
     it "changes the entry_station variable" do
       expect { subject.set_entry_station(aldgate) }
         .to change { subject.entry_station }.from(nil).to(aldgate)
+    end
+  end
+
+  describe '#get_string' do
+    it 'returns a readable string of the journey' do
+      complete_journey = described_class.new(
+        entry_station: kingsx, exit_station: aldgate
+      )
+
+      expect(complete_journey.get_string)
+        .to eq('Start: Kings Cross, Zone 1.  Exit: Aldgate, Zone 3.')
     end
   end
 
@@ -115,7 +129,6 @@ describe Journey do
         )
         expect(journey.fare).to eq(6)
       end
-
     end
 
     context "when touching in, having failed to touch out" do

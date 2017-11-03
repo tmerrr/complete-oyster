@@ -31,6 +31,10 @@ class JourneyLog
     @journey.fare
   end
 
+  def view_history
+    @history.each { |journey| puts journey.get_string }
+  end
+
   private
   def add_journey_to_history
     @history << @journey

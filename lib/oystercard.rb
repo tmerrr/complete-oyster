@@ -36,6 +36,10 @@ class Oystercard
     @journeylog.in_journey?
   end
 
+  def view_history
+    @journeylog.view_history
+  end
+
   private
 
   def exceed?(amount)
