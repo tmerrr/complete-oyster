@@ -1,6 +1,8 @@
 class Journey
   attr_reader :entry_station, :exit_station
 
+  PENALTY = 6
+
   def initialize(entry_station: nil, exit_station: nil)
     @entry_station  = entry_station
     @exit_station   = exit_station
@@ -19,9 +21,9 @@ class Journey
   end
 
   def fare
-    return 6 if penalty_due?
+    return PENALTY if penalty_due?
     return 0 if starting_journey?
-    1
+    calculate_fare
   end
 
   private
@@ -32,5 +34,17 @@ class Journey
 
   def starting_journey?
     @entry_station == nil && @exit_station == nil
+  end
+
+  def calculate_fare
+    case (@exit_station.zone - @entry_station.zone).abs
+    when 0 then 1
+    when 1 then 2
+    when 2 then 3
+    when 3 then 4
+    when 4 then 5
+    else
+      6
+    end
   end
 end

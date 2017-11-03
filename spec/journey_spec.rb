@@ -60,24 +60,77 @@ describe Journey do
 
   describe "#fare" do
     context "when completing full journey" do
-      let(:completed_journey) do
-        described_class.new(entry_station: aldgate,exit_station: aldgate)
+      let(:station1) { double(:station, zone: 1) }
+      let(:station2) { double(:station, zone: 2) }
+      let(:station3) { double(:station, zone: 3) }
+      let(:station4) { double(:station, zone: 4) }
+      let(:station5) { double(:station, zone: 5) }
+      let(:station6) { double(:station, zone: 6) }
+
+      it "returns 1 for same zones" do
+        journey = described_class.new(
+          entry_station: station1, exit_station: station1
+        )
+        expect(journey.fare).to eq(1)
       end
-      it "should return 1" do
-        expect(completed_journey.fare).to eq(1)
+
+      it 'returns 2 when crossing 1 zone boundary' do
+        journey = described_class.new(
+          entry_station: station1, exit_station: station2
+        )
+        expect(journey.fare).to eq(2)
       end
+
+      it 'returns 3 when crossing 2 zone boundary' do
+        journey = described_class.new(
+          entry_station: station1, exit_station: station3
+        )
+        expect(journey.fare).to eq(3)
+      end
+
+      it 'returns 4 when crossing 3 zone boundary' do
+        journey = described_class.new(
+          entry_station: station1, exit_station: station4
+        )
+        expect(journey.fare).to eq(4)
+      end
+
+      it 'returns 5 when crossing 4 zone boundary' do
+        journey = described_class.new(
+          entry_station: station1, exit_station: station5
+        )
+        expect(journey.fare).to eq(5)
+      end
+
+      it 'returns 6 when crossing 5 zone boundary' do
+        journey = described_class.new(
+          entry_station: station1, exit_station: station6
+        )
+        expect(journey.fare).to eq(6)
+      end
+
+      it 'returns 6 when crossing 5 zone boundary' do
+        journey = described_class.new(
+          entry_station: station6, exit_station: station1
+        )
+        expect(journey.fare).to eq(6)
+      end
+
     end
+
     context "when touching in, having failed to touch out" do
       it "should return 6" do
         expect(ongoing_journey.fare).to eq(6)
       end
     end
+
     context "when touching out, having failed to touch in" do
       let(:journey) { described_class.new(exit_station: aldgate) }
       it "should return 6" do
         expect(journey.fare).to eq(6)
       end
     end
+
     context "when touching in, when starting a new journey" do
       it "should return 0" do
         expect(subject.fare).to eq(0)
